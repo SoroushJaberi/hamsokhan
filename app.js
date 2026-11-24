@@ -4,7 +4,7 @@
   var CFG = window.HS_CONFIG || {};
   var C = window.HS_CONTENT;
   var PR = window.HS_PRACTICE;
-  var APP_V = CFG.appVersion || '1.0.0';
+  var APP_V = CFG.appVersion || '1.0.1';
   var GUIDE_V = CFG.guideVersion || '';
   var GAS = CFG.mode === 'gas';
   var app = document.getElementById('app');
@@ -449,7 +449,7 @@
     setActs({
       next: function () { tutorial(i + 1); },
       back: function () { tutorial(i - 1); },
-      done: function () { rater('tryit', PR.tryit, function () { api('tutorialDone').catch(function () { return null; }).then(function (r) { if (r) S.st = r; practiceIntro('main'); }); }); }
+      done: function () { rater('tryit', PR.tryit, function () { loading(); api('tutorialDone').catch(function () { return null; }).then(function (r) { if (r) S.st = r; practiceIntro('main'); }); }); }
     });
     var dots = '';
     for (var k = 0; k < n; k++) dots += '<i class="' + (k === i ? 'on' : '') + '"></i>';
@@ -563,8 +563,8 @@
       '<span class="spacer"></span>' +
       '<button class="btn primary" data-act="next"' + (canNext ? '' : ' disabled') + '>' + esc(last ? (R.mode === 'rate' ? X.finish : C.tutorial.next) : X.next) + '</button></div>';
     setActs({
-      pick: pick, next: next, prev: function () { if (R.idx > 0) { tick(); R.idx--; showItem(); } },
-      skip: function () { tick(); var x = curAns(); x.skip = true; x.f = ''; x.s = ''; enqueue(R.items[R.idx].code); next(); },
+      pick: pick, next: next, prev: function () { if (R && R.idx > 0) { tick(); R.idx--; showItem(); } },
+      skip: function () { if (!R) return; tick(); var x = curAns(); x.skip = true; x.f = ''; x.s = ''; enqueue(R.items[R.idx].code); next(); },
       note: function () { var w = document.getElementById('notewrap'); w.classList.toggle('hidden'); if (!w.classList.contains('hidden')) document.getElementById('note').focus(); },
       guide: openGuide
     });
@@ -586,6 +586,7 @@
     if (R.mode === 'main' || R.mode === 'retry') store.set('pr:' + R.mode + ':' + S.token, { ans: R.ans });
   }
   function pick(el) {
+    if (!R) return;           // a tap that lands after the set was closed (slow connection, double tap)
     var field = el.getAttribute('data-field'), v = el.getAttribute('data-v');
     var a = curAns();
     if (feedbackMode() && a.f && a.s) return;
@@ -601,6 +602,7 @@
     }
   }
   function next() {
+    if (!R) return;
     var a = R.ans[R.idx];
     if (!a || !(a.skip || (a.f && a.s))) return;
     tick();
