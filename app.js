@@ -4,7 +4,7 @@
   var CFG = window.HS_CONFIG || {};
   var C = window.HS_CONTENT;
   var PR = window.HS_PRACTICE;
-  var APP_V = CFG.appVersion || '1.0.1';
+  var APP_V = CFG.appVersion || '1.0.2';
   var GUIDE_V = CFG.guideVersion || '';
   var GAS = CFG.mode === 'gas';
   var app = document.getElementById('app');

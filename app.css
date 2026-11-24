@@ -151,7 +151,11 @@ table.t { width: 100%; border-collapse: collapse; margin: 8px 0; font-size: .93r
 table.t th, table.t td { border: 1px solid var(--line); padding: 7px 10px; text-align: right; vertical-align: top; }
 table.t th { background: var(--paper-2); font-weight: 700; }
 table.t td.c, table.t th.c { text-align: center; white-space: nowrap; }
-table.meta td { border: none; padding: 2px 0; }
+table.meta td { border: none; padding: 2px 0; overflow-wrap: anywhere; }
+@media (max-width: 560px) {      /* phones: one line per person instead of two cramped columns */
+  table.meta, table.meta tbody, table.meta tr, table.meta td { display: block; width: 100%; }
+  table.meta td { padding: 3px 0; }
+}
 .tablewrap { overflow-x: auto; }
 .notes { padding-right: 20px; }
 .notes li { margin: 6px 0; }
