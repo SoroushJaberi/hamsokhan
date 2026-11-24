@@ -4,7 +4,7 @@
   var CFG = window.HS_CONFIG || {};
   var C = window.HS_CONTENT;
   var PR = window.HS_PRACTICE;
-  var APP_V = CFG.appVersion || '1.0.3';
+  var APP_V = CFG.appVersion || '1.0.4';
   var GUIDE_V = CFG.guideVersion || '';
   var GAS = CFG.mode === 'gas';
   var app = document.getElementById('app');
@@ -319,7 +319,7 @@
       '<div class="cta">' + (open ? '<button class="btn primary big" data-act="start">' + esc(L.start) + '</button>' : '<div class="state">' + esc(L.closed) + '</div>') +
       '<button class="btn ghost" data-act="resume">' + esc(L.resume) + '</button></div>' +
       '<div class="card"><h3>' + esc(L.journeyTitle) + '</h3><ol class="journey">' + journey + '</ol></div>' +
-      '<p class="foot">' + esc(L.footer) + (cfg.university ? ' · ' + bdi(cfg.university) : '') +
+      '<p class="foot">' + esc(L.footer) + (cfg.university ? '، ' + bdi(cfg.university) : '') +
       (cfg.contact ? '<br>' + fillHtml(C.menu.contact, { contact: bdi(cfg.contact) }) : '') + '</p>', { menu: false });
   }
   function resume() {
@@ -494,8 +494,8 @@
     var lab = function (opts, v) { var o = opts.filter(function (x) { return x.v === v; })[0]; return o ? o.t : v; };
     var wrong = items.map(function (it, i) { return { it: it, a: answers[i] }; }).filter(function (x) { return x.a.f !== x.it.f || x.a.s !== x.it.s; });
     var list = wrong.map(function (x) {
-      return '<li><div class="q">' + esc(x.it.q) + '</div><div class="small">' + esc(P.yours) + ': ' + esc(lab(C.rate.fOpts, x.a.f)) + ' · ' + esc(lab(C.rate.sOpts, x.a.s)) + '</div>' +
-        '<div class="small"><b>' + esc(P.right) + ':</b> ' + esc(lab(C.rate.fOpts, x.it.f)) + ' · ' + esc(lab(C.rate.sOpts, x.it.s)) + '</div><div class="small muted">' + esc(x.it.why) + '</div></li>';
+      return '<li><div class="q">' + esc(x.it.q) + '</div><div class="small">' + esc(P.yours) + ': ' + esc(lab(C.rate.fOpts, x.a.f)) + '، ' + esc(lab(C.rate.sOpts, x.a.s)) + '</div>' +
+        '<div class="small"><b>' + esc(P.right) + ':</b> ' + esc(lab(C.rate.fOpts, x.it.f)) + '، ' + esc(lab(C.rate.sOpts, x.it.s)) + '</div><div class="small muted">' + esc(x.it.why) + '</div></li>';
     }).join('');
     setActs({ retry: function () { practiceIntro('retry'); }, guide: openGuide });
     page('<div class="card stack"><h2>' + esc(P.fail) + '</h2><p>' + esc(fill(P.failText, nums)) + '</p><h3>' + esc(P.review) + '</h3><ul class="review">' + list + '</ul>' +
@@ -552,7 +552,7 @@
     if (locked) {
       var okF = a.f === it.f, okS = a.s === it.s, lab = function (opts, v) { return opts.filter(function (x) { return x.v === v; })[0].t; };
       fb = '<div class="feedback ' + (okF && okS ? 'ok' : 'no') + '" role="status"><b>' + esc(okF && okS ? X.correct : X.wrong) + '</b>' +
-        (okF && okS ? '' : esc(X.guideSays) + ' ' + esc(lab(X.fOpts, it.f)) + ' · ' + esc(lab(X.sOpts, it.s)) + '<br>') + esc(it.why) + '</div>';
+        (okF && okS ? '' : esc(X.guideSays) + ' ' + esc(lab(X.fOpts, it.f)) + '، ' + esc(lab(X.sOpts, it.s)) + '<br>') + esc(it.why) + '</div>';
     }
     var last = R.idx === n - 1;
     var canNext = a.skip || (a.f && a.s);
